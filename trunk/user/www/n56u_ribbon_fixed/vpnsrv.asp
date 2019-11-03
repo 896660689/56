@@ -1098,7 +1098,7 @@ function getHash(){
                             <div id="div_acl_info" class="alert alert-info" style="margin: 10px;"></div>
                             <table class="table">
                                 <tr>
-                                    <th width="20%" style="border-top: 0 none;"><#VPNS_CName#>:</th>
+                                    <th width="20%" style="border-top: 0 none;"><#VPNS_CName#></th>
                                     <th width="20%" style="border-top: 0 none;" id="col_pass"><#ISP_Authentication_pass#></th>
                                     <th width="20%" style="border-top: 0 none;"><#VPNS_FixIP#></th>
                                     <th width="35%" style="border-top: 0 none;"><#VPNS_RNet#></th>

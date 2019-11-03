@@ -148,7 +148,7 @@ const struct language_table language_tables[] = {
 	{"pl", "PL"},
 	{"zh-tw", "TW"},
 	{"zh", "TW"},
-	{"zh-hk", "CN"},
+	{"zh-hk", "TW"},
 	{"zh-cn", "CN"},
 	{"ms", "MS"},
 	{"th", "TH"},
@@ -956,7 +956,6 @@ handle_request(FILE *conn_fp, const conn_item_t *item)
 			query = NULL;
 		}
 	}
-	
 
 	/* special case for reset browser credentials */
 	if (strcmp(file, "logout") == 0) {

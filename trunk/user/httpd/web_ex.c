@@ -658,7 +658,7 @@ dump_file(webs_t wp, char *filename)
 	}
 
 	extensions = strrchr(filename, '.');
-	if (extensions && strcmp(extensions, ".key") == 0) {
+	if (!get_login_safe() && extensions && strcmp(extensions, ".key") == 0) {
 		return websWrite(wp, "%s", "# !!!This is hidden write-only secret key file!!!\n");
 	}
 
@@ -1192,7 +1192,9 @@ update_variables_ex(int eid, webs_t wp, int argc, char **argv)
 		}
 		else {
 			char group_id[64];
+			char group_id2[64];
 			snprintf(group_id, sizeof(group_id), "%s", websGetVar(wp, "group_id", ""));
+			snprintf(group_id2, sizeof(group_id2), "%s", websGetVar(wp, "group_id2", ""));
 			
 			if (strlen(action_mode) > 0) {
 				if (!strcmp(action_mode, " Add ")) {
@@ -1233,6 +1235,22 @@ update_variables_ex(int eid, webs_t wp, int argc, char **argv)
 						nvram_set_int_temp(group_id, 0);
 						nvram_clr_group_temp(v);
 					}
+
+					if (v->name && nvram_get_int(group_id2) > 0) {
+						restart_needed_bits |= (v->event_mask & ~(EVM_BLOCK_UNSAFE));
+						dbG("group restart_needed_bits: 0x%llx\n", restart_needed_bits);
+#if BOARD_HAS_5G_RADIO
+						if (!strcmp(group_id2, "RBRList") || !strcmp(group_id2, "ACLList"))
+							wl_modified |= WIFI_COMMON_CHANGE_BIT;
+#endif
+						if (!strcmp(group_id2, "rt_RBRList") || !strcmp(group_id2, "rt_ACLList"))
+							rt_modified |= WIFI_COMMON_CHANGE_BIT;
+						
+						nvram_modified = 1;
+						nvram_set_int_temp(group_id2, 0);
+						nvram_clr_group_temp(v);
+					}
+					
 					
 					if (nvram_modified)
 						websWrite(wp, "<script>done_committing();</script>\n");
@@ -1908,51 +1926,6 @@ wan_action_hook(int eid, webs_t wp, int argc, char **argv)
 	return 0;
 }
 
-#if defined (APP_SCUT)
-static int scutclient_action_hook(int eid, webs_t wp, int argc, char **argv)
-{
-	int needed_seconds = 2;
-	char *scut_action = websGetVar(wp, "connect_action", "");
-
-	if (!strcmp(scut_action, "Reconnect")) {
-		notify_rc(RCN_RESTART_SCUT);
-	}
-	else if (!strcmp(scut_action, "Disconnect")) {
-		notify_rc("stop_scutclient");
-	}
-
-	websWrite(wp, "<script>restart_needed_time(%d);</script>\n", needed_seconds);
-	return 0;
-}
-
-static int scutclient_status_hook(int eid, webs_t wp, int argc, char **argv)
-{
-	int status_code = pids("bin_scutclient");
-	websWrite(wp, "function scutclient_status() { return %d;}\n", status_code);
-	return 0;
-}
-
-static int scutclient_version_hook(int eid, webs_t wp, int argc, char **argv)
-{
-	FILE *fstream = NULL;
-	char ver[8];
-	memset(ver, 0, sizeof(ver));
-	fstream = popen("/usr/bin/bin_scutclient -V","r");
-	if(fstream) {
-		fgets(ver, sizeof(ver), fstream);
-		pclose(fstream);
-		if (strlen(ver) > 0)
-			ver[strlen(ver) - 1] = 0;
-		if (!(ver[0]>='0' && ver[0]<='9'))
-			sprintf(ver, "%s", "unknown");
-	} else {
-		sprintf(ver, "%s", "unknown");
-	}
-	websWrite(wp, "function scutclient_version() { return '%s';}\n", ver);
-	return 0;
-}
-#endif
-
 #if defined (APP_SHADOWSOCKS)
 static int shadowsocks_action_hook(int eid, webs_t wp, int argc, char **argv)
 {
@@ -1999,7 +1972,7 @@ static int rules_count_hook(int eid, webs_t wp, int argc, char **argv)
 	websWrite(wp, "function chnroute_count() { return '%s';}\n", count);
 #if defined(APP_SHADOWSOCKS)
 	memset(count, 0, sizeof(count));
-	fstream = popen("grep ^server /etc/storage/gfwlist/dnsmasq_gfwlist.conf |wc -l","r");
+	fstream = popen("grep ^server /etc/storage/gfwlist/dnsmasq_gfwlist_ipset.conf |wc -l","r");
 	if(fstream) {
 		fgets(count, sizeof(count), fstream);
 		pclose(fstream);
@@ -2015,11 +1988,23 @@ static int rules_count_hook(int eid, webs_t wp, int argc, char **argv)
 
 #endif
 
-#if defined(APP_DNSFORWARDER)
+#if defined(APP_SHADOWSOCKS)
 static int dnsforwarder_status_hook(int eid, webs_t wp, int argc, char **argv)
 {
 	int status_code = pids("dns-forwarder");
 	websWrite(wp, "function dnsforwarder_status() { return %d;}\n", status_code);
+	return 0;
+}
+static int pdnsd_status_hook(int eid, webs_t wp, int argc, char **argv)
+{
+	int status_code = pids("pdnsd");
+	websWrite(wp, "function pdnsd_status() { return %d;}\n", status_code);
+	return 0;
+}
+static int dnsproxy_status_hook(int eid, webs_t wp, int argc, char **argv)
+{
+	int status_code = pids("dnsproxy");
+	websWrite(wp, "function dnsproxy_status() { return %d;}\n", status_code);
 	return 0;
 }
 #endif
@@ -2178,20 +2163,10 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 #else
 	int found_app_sshd = 0;
 #endif
-#if defined(APP_SCUT)
-	int found_app_scutclient = 1;
-#else
-	int found_app_scutclient = 0;
-#endif
 #if defined(APP_TTYD)
 	int found_app_ttyd = 1;
 #else
 	int found_app_ttyd = 0;
-#endif
-#if defined(APP_VLMCSD)
-	int found_app_vlmcsd = 1;
-#else
-	int found_app_vlmcsd = 0;
 #endif
 #if defined(APP_NAPT66)
 	int found_app_napt66 = 1;
@@ -2202,11 +2177,6 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 	int found_app_shadowsocks = 1;
 #else
 	int found_app_shadowsocks = 0;
-#endif
-#if defined(APP_DNSFORWARDER)
-	int found_app_dnsforwarder = 1;
-#else
-	int found_app_dnsforwarder = 0;
 #endif
 #if defined(APP_XUPNPD)
 	int found_app_xupnpd = 1;
@@ -2366,11 +2336,8 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 		"function found_srv_u2ec() { return %d;}\n"
 		"function found_srv_lprd() { return %d;}\n"
 		"function found_app_sshd() { return %d;}\n"
-		"function found_app_scutclient() { return %d;}\n"
 		"function found_app_ttyd() { return %d;}\n"
-		"function found_app_vlmcsd() { return %d;}\n"
 		"function found_app_napt66() { return %d;}\n"
-		"function found_app_dnsforwarder() { return %d;}\n"
 		"function found_app_shadowsocks() { return %d;}\n"
 		"function found_app_xupnpd() { return %d;}\n",
 		found_utl_hdparm,
@@ -2387,11 +2354,8 @@ ej_firmware_caps_hook(int eid, webs_t wp, int argc, char **argv)
 		found_srv_u2ec,
 		found_srv_lprd,
 		found_app_sshd,
-		found_app_scutclient,
 		found_app_ttyd,
-		found_app_vlmcsd,
 		found_app_napt66,
-		found_app_dnsforwarder,
 		found_app_shadowsocks,
 		found_app_xupnpd
 	);
@@ -3146,12 +3110,6 @@ apply_cgi(const char *url, webs_t wp)
 	else if (!strcmp(value, " Reboot "))
 	{
 		sys_reboot();
-		return 0;
-	}
-	else if (!strcmp(value, " Shutdown "))
-	{
-		system("shutdown");
-		websRedirect(wp, current_url);
 		return 0;
 	}
 	else if (!strcmp(value, " RestoreNVRAM "))
@@ -4041,18 +3999,10 @@ struct ej_handler ej_handlers[] =
 	{ "modify_sharedfolder", ej_modify_sharedfolder},
 	{ "set_share_mode", ej_set_share_mode},
 #endif
-#if defined (APP_SCUT)
-	{ "scutclient_action", scutclient_action_hook},
-	{ "scutclient_status", scutclient_status_hook},
-	{ "scutclient_version", scutclient_version_hook},
-#endif
 #if defined (APP_SHADOWSOCKS)
 	{ "shadowsocks_action", shadowsocks_action_hook},
 	{ "shadowsocks_status", shadowsocks_status_hook},
 	{ "rules_count", rules_count_hook},
-#endif
-#if defined (APP_DNSFORWARDER)
-	{ "dnsforwarder_status", dnsforwarder_status_hook},
 #endif
 	{ "openssl_util_hook", openssl_util_hook},
 	{ "openvpn_srv_cert_hook", openvpn_srv_cert_hook},

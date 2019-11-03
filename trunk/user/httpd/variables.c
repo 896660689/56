@@ -130,9 +130,6 @@
 			{"ttyd_enable", "", NULL, EVM_RESTART_TTYD},
 			{"ttyd_port", "", NULL, EVM_RESTART_TTYD},
 #endif
-#if defined (APP_VLMCSD)
-			{"vlmcsd_enable", "", NULL, EVM_RESTART_VLMCSD},
-#endif
 #if defined (APP_NAPT66)
 			{"napt66_enable", "", NULL, FALSE},
 #endif
@@ -292,6 +289,7 @@
 			{"wan_auth_pass", "", NULL, EVM_RESTART_WAN},
 			{"wan_auth_host", "", NULL, EVM_RESTART_WAN},
 			{"wan_ttl_fix", "", NULL, EVM_RESTART_FIREWALL},
+			{"wan_ttl_value", "", NULL, EVM_RESTART_FIREWALL},
 			{"wan_ttl_value", "", NULL, EVM_RESTART_FIREWALL},
 			{"viptv_mode", "", NULL, EVM_RESTART_WAN},
 			{"viptv_ipaddr", "", NULL, EVM_RESTART_WAN},
@@ -775,37 +773,22 @@
 #endif
 			{0,0,0,0}
 		};
-		
-#if defined (APP_SCUT)
-	struct variable variables_ScutclientConf[] = {
-			{"scutclient_enable", "",NULL, EVM_RESTART_SCUT},
-			{"scutclient_debug","",NULL,EVM_RESTART_SCUT },
-			{"scutclient_username","",NULL,EVM_RESTART_SCUT },
-			{"scutclient_password","",NULL,EVM_RESTART_SCUT },
-			{"scutclient_server_auth_ip","",NULL,EVM_RESTART_SCUT },
-			{"scutclient_version","",NULL,EVM_RESTART_SCUT },
-			{"scutclient_hash","",NULL,EVM_RESTART_SCUT },
-			{"scutclient_hostname","",NULL,EVM_RESTART_SCUT },
-			{"scutclient_watchcat","",NULL,FALSE},
-			{0,0,0,0}
-	};
-#endif
-
-#if defined(APP_DNSFORWARDER)
-	struct variable variables_dnsforwarderConf[] = {
-			{"dns_forwarder_enable", "", NULL, EVM_RESTART_DNSFORWARDER},
-			{"dns_forwarder_bind", "", NULL, EVM_RESTART_DNSFORWARDER},
-			{"dns_forwarder_port", "", NULL, EVM_RESTART_DNSFORWARDER},
-			{"dns_forwarder_server", "", NULL, EVM_RESTART_DNSFORWARDER},
-			{0,0,0,0}
-	};
-#endif
 
 #if defined(APP_SHADOWSOCKS)
 	struct variable variables_ShadowsocksConf[] = {
 			{"ss_enable","",NULL, EVM_RESTART_SHADOWSOCKS},
+			{"ss_pdnsd","",NULL, EVM_RESTART_SHADOWSOCKS},
+			{"ss_dnsproxy","",NULL, EVM_RESTART_SHADOWSOCKS},
+			{"ss_dnsproxy_port","",NULL, EVM_RESTART_SHADOWSOCKS},
+			{"ss_dnsforwarder","",NULL, EVM_RESTART_SHADOWSOCKS},
 			{"ss_type","",NULL, EVM_RESTART_SHADOWSOCKS|EVM_RESTART_SS_TUNNEL},
 			{"ss_mode","",NULL, EVM_RESTART_SHADOWSOCKS},
+			{"udp_relay_server","",NULL, EVM_RESTART_SHADOWSOCKS},
+			{"ss_threads","",NULL, EVM_RESTART_SHADOWSOCKS},
+			{"ss_turn","",NULL, EVM_RESTART_SHADOWSOCKS},
+			{"ss_turn_s","",NULL, EVM_RESTART_SHADOWSOCKS},
+			{"ss_turn_ss","",NULL, EVM_RESTART_SHADOWSOCKS},
+			{"ss_run_mode","",NULL, EVM_RESTART_SHADOWSOCKS},
 			{"ss_server","",NULL, EVM_RESTART_SHADOWSOCKS|EVM_RESTART_SS_TUNNEL},
 			{"ss_server_port","",NULL, EVM_RESTART_SHADOWSOCKS|EVM_RESTART_SS_TUNNEL},
 			{"ss_key","",NULL, EVM_RESTART_SHADOWSOCKS|EVM_RESTART_SS_TUNNEL},
@@ -820,7 +803,7 @@
 			{"ss_proto_param","",NULL, EVM_RESTART_SHADOWSOCKS|EVM_RESTART_SS_TUNNEL},
 			{"ss_obfs","",NULL, EVM_RESTART_SHADOWSOCKS|EVM_RESTART_SS_TUNNEL},
 			{"ss_obfs_param","",NULL, EVM_RESTART_SHADOWSOCKS|EVM_RESTART_SS_TUNNEL},
-			{"ss_watchcat","",NULL, FALSE},
+			{"ss_watchcat","",NULL, EVM_RESTART_SHADOWSOCKS|EVM_RESTART_SS_TUNNEL},
 			{"ss_update_chnroute","",NULL, FALSE},
 			{"ss_update_gfwlist","",NULL, FALSE},
 			{"ss-tunnel_enable","",NULL, EVM_RESTART_SS_TUNNEL},
@@ -938,12 +921,6 @@
 		{"DeviceSecurity11b",		variables_DeviceSecurity11b},
 		{"WLANAuthentication11a",	variables_WLANAuthentication11a},
 		{"WLANAuthentication11b",	variables_WLANAuthentication11b},
-#if defined(APP_DNSFORWARDER)
-		{"dnsforwarderConf",		variables_dnsforwarderConf},
-#endif
-#if defined(APP_SCUT)
-		{"ScutclientConf",		variables_ScutclientConf},
-#endif
 #if defined(APP_SHADOWSOCKS)
 		{"ShadowsocksConf",		variables_ShadowsocksConf},
 #endif
@@ -1011,17 +988,8 @@
 		{EVM_RESTART_ARIA,		EVT_RESTART_ARIA,		RCN_RESTART_ARIA,	EVM_RESTART_FIREWALL},
 #endif
 #endif
-#if defined(APP_SCUT)
-		{EVM_RESTART_SCUT,		EVT_RESTART_SCUT,		RCN_RESTART_SCUT,	0},
-#endif
 #if defined(APP_TTYD)
 		{EVM_RESTART_TTYD,		EVT_RESTART_TTYD,		RCN_RESTART_TTYD,	0},
-#endif
-#if defined(APP_VLMCSD)
-		{EVM_RESTART_VLMCSD,	EVT_RESTART_VLMCSD,		RCN_RESTART_VLMCSD,	0},
-#endif
-#if defined(APP_DNSFORWARDER)
-		{EVM_RESTART_DNSFORWARDER,	EVT_RESTART_DNSFORWARDER,	RCN_RESTART_DNSFORWARDER, 0},
 #endif
 #if defined(APP_SHADOWSOCKS)
 		{EVM_RESTART_SHADOWSOCKS,	EVT_RESTART_SHADOWSOCKS,	RCN_RESTART_SHADOWSOCKS,  0},
@@ -1033,4 +1001,3 @@
 		{EVM_RESTART_FIREWALL,		EVT_RESTART_FIREWALL,		RCN_RESTART_FIREWALL,	0},
 		{0,0,0,0}
 	};
-

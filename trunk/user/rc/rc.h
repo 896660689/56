@@ -164,7 +164,7 @@ void stop_auth_eapol(void);
 int  start_auth_kabinet(void);
 void stop_auth_kabinet(void);
 
-/* common_ex.c */
+/* common_ex.c void char_to_ascii(char *output, char *input); */
 long uptime(void);
 int rand_seed_by_time(void);
 void set_pagecache_reclaim(void);
@@ -173,7 +173,7 @@ void update_router_mode();
 char *mac_conv(const char *mac_nvkey, int idx, char *buf);
 char *mac_conv2(const char *mac_nvkey, int idx, char *buf);
 void get_eeprom_params(void);
-void char_to_ascii(char *output, char *input);
+void char_to_ascii(char *output, uint8_t *input);
 unsigned int get_param_int_hex(const char *param);
 void load_user_config(FILE *fp, const char *dir_name, const char *file_name, const char **forbid_list);
 int is_module_loaded(const char *module_name);
@@ -512,12 +512,6 @@ int start_services_once(int is_ap_mode);
 void stop_services(int stopall);
 void stop_services_lan_wan(void);
 void stop_misc(void);
-#if defined(APP_SCUT)
-int is_scutclient_run(void);
-void stop_scutclient(void);
-void start_scutclient(void);
-void restart_scutclient(void);
-#endif
 #if defined(APP_TTYD)
 void stop_ttyd(void);
 void start_ttyd(void);
@@ -533,18 +527,8 @@ void restart_ss_tunnel(void);
 void update_chnroute(void);
 void update_gfwlist(void);
 #endif
-#if defined(APP_VLMCSD)
-void stop_vlmcsd(void);
-void start_vlmcsd(void);
-void restart_vlmcsd(void);
-#endif
 #if defined(APP_NAPT66)
 void start_napt66(void);
-#endif
-#if defined(APP_DNSFORWARDER)
-void stop_dnsforwarder(void);
-void start_dnsforwarder(void);
-void restart_dnsforwarder(void);
 #endif
 
 /* services_ex.c */
@@ -626,6 +610,7 @@ void stop_aria(void);
 void run_aria(void);
 void restart_aria(void);
 #endif
+
 int count_stor_mountpoint(void);
 void umount_stor_path(struct disk_info_t *disks_info, int port, const char *dev_name, int do_spindown);
 void umount_ejected(void);

@@ -891,6 +891,7 @@ static const struct inadyn_system_t {
 	{ "TB.NETASSIST.UA",      "ipv6tb@netassist.ua"        },
 	{ "IPV4.NSUPDATE.INFO",   "ipv4@nsupdate.info"         },
 	{ "FREEDNS.AFRAID.ORG",   "default@freedns.afraid.org" },
+	{ "WWW.PUBYUN.COM",       "dyndns@3322.org"            },
 	{ "CUSTOM",               "custom@http_srv_basic_auth" },
 	{ NULL, NULL }
 };
@@ -911,6 +912,8 @@ inadyn_checkip_url[] = {
 	"ipv4.wtfismyip.com /text",
 	"ipv4.nsupdate.info /myip",
 	"myip.dtdns.com /",
+	"members.3322.net/dyndns/getip /",
+	"ip.3322.net /",
 };
 
 static const char *

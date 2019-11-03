@@ -309,7 +309,7 @@ function submitInternet(v){
     <td id="wan_status" colspan="3"></td>
   </tr>
   <tr>
-    <th><#Connectiontype#>:</th>
+    <th><#Connectiontype#></th>
     <td colspan="3"><span id="WANType"></span></td>
   </tr>
   <tr id="row_uptime" style="display:none">
@@ -355,7 +355,7 @@ function submitInternet(v){
     <td colspan="3"><span id="MANGW4"></span></td>
   </tr>
   <tr>
-    <th>DNS:</th>
+    <th><#DNS#></th>
     <td colspan="3"><span id="WANDNS"></span></td>
   </tr>
   <tr>

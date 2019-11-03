@@ -792,8 +792,8 @@ LED_CONTROL(int gpio_led, int flag)
 #endif
 #if defined (CONFIG_RALINK_MT7628) && (BOARD_GPIO_LED_WIFI == 44)
 	if (gpio_led == BOARD_GPIO_LED_WIFI) {
-		cpu_gpio_mode_set_bit(32, (flag == LED_OFF) ? 1 : 0); // change GPIO Mode for WLED_AN
-		cpu_gpio_mode_set_bit(48, (flag == LED_OFF) ? 1 : 0); // change GPIO Mode for WLED_KN
+        //cpu_gpio_mode_set_bit(32, (flag == LED_OFF) ? 1 : 0); // change GPIO Mode for WLED_AN
+        //cpu_gpio_mode_set_bit(48, (flag == LED_OFF) ? 1 : 0); // change GPIO Mode for WLED_KN
 		cpu_gpio_set_pin(gpio_led, LED_OFF); // always set GPIO to high
 	} else
 #endif
@@ -810,11 +810,7 @@ int
 init_crontab(void)
 {
 	int ret = 0; //no change
-#if defined (APP_SCUT)
-	ret |= system("/sbin/check_crontab.sh a/1 a a a a scutclient_watchcat.sh");
-#endif
 #if defined (APP_SHADOWSOCKS)
-	ret |= system("/sbin/check_crontab.sh a/5 a a a a ss-watchcat.sh");
 	ret |= system("/sbin/check_crontab.sh 0 8 a/10 a a update_chnroute.sh");
 	ret |= system("/sbin/check_crontab.sh 0 7 a/10 a a update_gfwlist.sh");
 #endif
@@ -1236,16 +1232,6 @@ handle_notifications(void)
 			restart_sshd();
 		}
 #endif
-#if defined(APP_SCUT)
-		else if (strcmp(entry->d_name, RCN_RESTART_SCUT) == 0)
-		{
-			restart_scutclient();
-		}
-		else if (strcmp(entry->d_name, "stop_scutclient") == 0)
-		{
-			stop_scutclient();
-		}
-#endif
 #if defined(APP_TTYD)
 		else if (strcmp(entry->d_name, RCN_RESTART_TTYD) == 0)
 		{
@@ -1268,18 +1254,6 @@ handle_notifications(void)
 		else if (strcmp(entry->d_name, RCN_RESTART_GFWLIST_UPD) == 0)
 		{
 			update_gfwlist();
-		}
-#endif
-#if defined(APP_VLMCSD)
-		else if (strcmp(entry->d_name, RCN_RESTART_VLMCSD) == 0)
-		{
-			restart_vlmcsd();
-		}
-#endif
-#if defined(APP_DNSFORWARDER)
-		else if (strcmp(entry->d_name, RCN_RESTART_DNSFORWARDER) == 0)
-		{
-			restart_dnsforwarder();
 		}
 #endif
 #if defined(APP_SMBD) || defined(APP_NMBD)

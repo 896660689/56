@@ -277,7 +277,7 @@ function hideClients_Block(){
     <input type="hidden" name="current_page" value="Advanced_WMode2g_Content.asp">
     <input type="hidden" name="next_page" value="">
     <input type="hidden" name="next_host" value="">
-    <input type="hidden" name="sid_list" value="WLANConfig11b;">
+    <input type="hidden" name="sid_list" value="WLANConfig11b;General;">
     <input type="hidden" name="group_id" value="rt_RBRList">
     <input type="hidden" name="action_mode" value="">
     <input type="hidden" name="action_script" value="">
@@ -371,7 +371,7 @@ function hideClients_Block(){
 
                                     <table width="100%" align="center" cellpadding="4" cellspacing="0" class="table">
                                         <tr id="row_wds_apc" style="display:none;">
-                                            <th width="50%"><a id="ctl_apc_1" class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 0, 1);"><#APSTA_SSID#></a></th>
+                                            <th width="50%"><a id="ctl_apc_1" class="help_tooltip" href="javascript:void(0);" onmouseover="openTooltip(this, 0, 1);">STA SSID:</a></th>
                                             <td>
                                                 <div id="WDSAPList" class="alert alert-info ddown-list"></div>
                                                 <div class="input-append" style="float: left;">

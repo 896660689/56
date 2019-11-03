@@ -1292,13 +1292,13 @@ ipt_mangle_rules(const char *man_if, const char *wan_if, int use_man)
 		i_wan_ttl_fix = 0;
 
 	if (i_wan_ttl_value > 1) {
-			fput_int("/proc/sys/net/ipv4/ip_default_ttl", i_wan_ttl_value);
-	}
+		fput_int("/proc/sys/net/ipv4/ip_default_ttl", i_wan_ttl_value);
+		}
 
 	if (i_wan_ttl_fix) {
 		module_smart_load("iptable_mangle", NULL);
 		module_smart_load("xt_HL", NULL);
-	}
+		}
 
 	if (!(fp=fopen(ipt_file, "w")))
 		return;

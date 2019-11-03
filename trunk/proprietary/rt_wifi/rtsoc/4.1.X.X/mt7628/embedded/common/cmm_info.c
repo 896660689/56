@@ -3022,7 +3022,7 @@ VOID RTMPCommSiteSurveyData(
 #endif /* AIRPLAY_SUPPORT */
 		
 		sprintf(Ssid, "0x");
-		for (idx = 0; (idx < 15) && (idx < pBss->SsidLen); idx++)
+		for (idx = 0; (idx < (MAX_LEN_OF_SSID-2)/2) && (idx < pBss->SsidLen); idx++)
 			sprintf(Ssid + 2 + (idx*2), "%02X", (UCHAR)pBss->Ssid[idx]);
 	}
 		sprintf(msg+strlen(msg),"%-33s", Ssid);

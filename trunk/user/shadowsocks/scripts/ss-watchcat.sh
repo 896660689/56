@@ -1,49 +1,42 @@
 #!/bin/sh
 
-pidfile="/var/ss-watchcat.pid"
-China_ping_domain="www.qq.com"
-Foreign_wget_domain="http://www.google.com/"
-log_file="/tmp/ss-watchcat.log"
-max_log_bytes=100000
+PIDFILE_SS_WATCHDOG="/var/run/ss-watchdog.pid"
+echo "$$" > $PIDFILE_SS_WATCHDOG
 
-go_exit(){
-	rm -f $pidfile
-	exit
-}
+LOGFILE="/tmp/ss-watchcat.log"
 
+while true; do
+sleep 120
 loger(){
-	[ -f $log_file ] && [ $(stat -c %s $log_file) -gt $max_log_bytes ] && rm -f $log_file
+	LOGSIZE=$(wc -c < $LOGFILE)
+	[ $LOGSIZE -ge 5000 ] && sed -i -e 1,10d $LOGFILE
 	time=$(date "+%H:%M:%S")
-	echo "$time ss-watchcat $1" >> $log_file
-}
-
-detect_shadowsocks(){
-	wget --spider --quiet --timeout=3 $Foreign_wget_domain > /dev/null 2>&1
-	return $?
+	echo "$time ss-watchcat $1" >> $LOGFILE
 }
 
 restart_apps(){
-	/usr/bin/shadowsocks.sh restart >/dev/null 2>&1 && loger "Problem decteted, restart shadowsocks."
-	[ -f /usr/bin/dns-forwarder.sh ] && [ "$(nvram get dns_forwarder_enable)" = "1" ] && /usr/bin/dns-forwarder.sh restart >/dev/null 2>&1 && loger "Problem decteted, restart dns-forwarder."
+	/usr/bin/shadowsocks.sh restart > /dev/null 2>&1 && loger "Problem decteted, restart shadowsocks."
 }
 
-[ -f $pidfile ] && kill -9 "$(cat $pidfile)" || echo "$$" > $pidfile
-
-if [ "$(nvram get ss_watchcat)" != "1" ] || [ "$(nvram get ss_router_proxy)" != "1" ] || [ "$(nvram get ss_enable)" != "1" ]; then
-	go_exit
-fi
-
-tries=0
-while [ $tries -lt 3 ]; do
-	detect_shadowsocks
-	if [ "$?" = "0" ]; then
-		loger "No Problem."
-		go_exit
+wget -s -q -T 3 www.google.com.hk > /dev/null
+if [ "$?" == "0" ]; then
+	loger "Shadowsocks-服务正常,世界之窗已开启..."
+	mtk_gpio -w 13 0
+	mtk_gpio -w 14 1
+	mtk_gpio -w 15 0
+else
+	wget -s -q -T 3 www.baidu.com > /dev/null
+	if [ "$?" == "0" ]; then
+		loger "互联网络正常-Shadowsocks-服务失败,正在重启..."
+		mtk_gpio -w 13 1
+		mtk_gpio -w 14 1
+		mtk_gpio -w 15 1
+		restart_apps
 	else
-		tries=$((tries+1))
+		mtk_gpio -w 13 1
+		mtk_gpio -w 14 0
+		mtk_gpio -w 15 1
+		[ "$?" = 1 ] && loger "互联网络未接通....."
 	fi
+fi
 done
-/bin/ping -c 3 $China_ping_domain -w 5 >/dev/null 2>&1
-[ "$?" = 1 ] && loger "Network Error." && go_exit
-restart_apps
-go_exit

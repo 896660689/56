@@ -1,13 +1,13 @@
 THISDIR = $(shell pwd)
 
-SRC_SS_NAME=shadowsocks-libev-3.2.5
+SRC_SS_NAME=shadowsocks-libev-3.3.2
 #https://github.com/shadowsocks/shadowsocks-libev.git
 
 SRC_SSR_NAME=shadowsocksr-libev-master
 ARCHIVE_SSR_NAME=shadowsocksr-libev-master-e2373d7
 #https://github.com/shadowsocksr-backup/shadowsocksr-libev.git
 
-GFWLIST_NAME=dnsmasq_gfwlist.conf
+GFWLIST_NAME=dnsmasq_gfwlist_ipset.conf
 GFWLIST_URL=https://cokebar.github.io/gfwlist2dnsmasq/$(GFWLIST_NAME)
 GFWLIST_DIR=gfwlist
 
@@ -120,3 +120,5 @@ endif
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_SSSERVER),y)
 	$(ROMFSINST) -p +x $(THISDIR)/$(SRC_SS_NAME)/src/ss-server /usr/bin/ss-server
 endif
+	$(ROMFSINST) $(THISDIR)/Shadowsocks.asp /www/Shadowsocks.asp
+

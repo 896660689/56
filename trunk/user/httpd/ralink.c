@@ -52,7 +52,7 @@
 int
 ej_lan_leases(int eid, webs_t wp, int argc, char **argv)
 {
-	/* dnsmasq ex: 43200 00:26:18:57:08:bc 192.168.1.105 mypc-3eaf6880a0 01:00:26:18:57:08:bc */
+	/* dnsmasq ex: 43200 00:26:18:57:08:bc 192.168.2.60 mypc-3eaf6880a0 01:00:26:18:57:08:bc */
 	
 	FILE *fp = NULL;
 	int ret = 0;
@@ -64,7 +64,7 @@ ej_lan_leases(int eid, webs_t wp, int argc, char **argv)
 #endif
 
 	ret += websWrite(wp, "IPv4 Address       MAC Address          Host Name\n");
-	//                    192.168.100.100    00:90:F5:XX:XX:XX    Padavan
+	//                    192.168.2.16    00:90:F5:XX:XX:XX    Padavan
 	//                    ffff:ffff:ffff:0001:0000:0000:0000:0001 Padavan
 
 	if (!(fp = fopen("/tmp/dnsmasq.leases", "r")))
@@ -1138,7 +1138,7 @@ print_mac_table(webs_t wp, const char *wif_name, int num_ss_rx, int is_guest_on)
 #if defined (BOARD_MT7615_DBDC)
 		ret += print_sta_list(wp, mp, num_ss_rx, apidx); 
 #else
-		ret += print_sta_list(wp, mp, num_ss_rx, 0); 
+		ret += print_sta_list(wp, mp, num_ss_rx, 0);
 #endif
 		if (is_guest_on)
 #if defined (BOARD_MT7615_DBDC)
@@ -1474,7 +1474,7 @@ ej_wl_auth_list(int eid, webs_t wp, int argc, char **argv)
 }
 
 
-#define SSURV_LINE_LEN		(4+33+20+23+9+9+7+3)		// Channel+SSID+Bssid+Security+Signal+WiressMode+ExtCh+NetworkType
+#define SSURV_LINE_LEN		(4+33+20+23+9+7+7+3)		// Channel+SSID+Bssid+Security+Signal+WiressMode+ExtCh+NetworkType
 #define SSURV_LINE_LEN_WPS	(4+33+20+23+9+7+7+3+4+5)	// Channel+SSID+Bssid+Security+Signal+WiressMode+ExtCh+NetworkType+WPS+PIN
 
 #if BOARD_HAS_5G_RADIO
@@ -1483,8 +1483,8 @@ ej_wl_scan_5g(int eid, webs_t wp, int argc, char **argv)
 {
 	int retval = 0;
 	int apCount = 0;
-	char data[8192];
-	char ssid_str[128];
+	char data[16384];
+	char ssid_str[256];
 #if defined (USE_WSC_WPS)
 	char site_line[SSURV_LINE_LEN_WPS+1];
 #else
@@ -1584,8 +1584,8 @@ int
 ej_wl_scan_2g(int eid, webs_t wp, int argc, char **argv)
 {
 	int retval = 0, apCount = 0;
-	char data[8192];
-	char ssid_str[128];
+	char data[16384];
+	char ssid_str[256];
 #if (defined (USE_WSC_WPS) || defined(USE_RT3352_MII))
 	char site_line[SSURV_LINE_LEN_WPS+1];
 #else
