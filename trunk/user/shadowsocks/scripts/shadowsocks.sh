@@ -128,8 +128,7 @@ func_start(){
 	func_start_ss_redir && \
 	restart_firewall && \
 	loger $ss_bin "start done" || { ss-rules -f && loger $ss_bin "start fail!";}
-	nohup /usr/bin/ss-watchcat.sh >> /tmp/ss-watchcat.log 2>&1 &
-
+	[ ! -f "/tmp/ss-watchcat.log" ] && nohup /usr/bin/ss-watchcat.sh >> /tmp/ss-watchcat.log 2>&1 &
 
 	if [ "$ss_mode" = "2" ]; then
 		func_port_agent_mode && \
@@ -153,12 +152,6 @@ func_start(){
 			sed -i '$a min-cache-ttl=3600' $Dnsmasq_dns
 			sed -i '$a conf-dir=/etc/storage/gfwlist' $Dnsmasq_dns
 		fi
-		if [ -f "/etc/storage/dnsmasq.d/resolv_bak" ]; then
-			cp -f /etc/storage/dnsmasq.d/resolv_bak /etc/resolv.conf
-		else
-			sed -i '/182.254/d; /208.67/d;  /240c/d; /8.8.4.4/d' /etc/resolv.conf
-		fi
-		[ -f /etc/storage/dnsmasq.d ] && rm -rf /etc/storage/dnsmasq.d	
 	fi
 }
 
