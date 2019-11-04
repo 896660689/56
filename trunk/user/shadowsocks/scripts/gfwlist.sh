@@ -81,7 +81,7 @@ global {
 	cache_dir="/etc/init.d/pdnsd";
 	pid_file="/var/run/pdnsd.pid";
 	run_as="nobody";
-	server_port = 5335;
+	server_port = 5353;
 	server_ip = 127.0.0.1;
 	status_ctl = on;
 	query_method=tcp_only;
