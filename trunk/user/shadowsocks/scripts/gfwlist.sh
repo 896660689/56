@@ -45,7 +45,7 @@ if [ -f "/etc/storage/dnsmasq/dnsmasq.conf" ]; then
 min-cache-ttl=3600
 # 指定服务器'域名''地址'文件夹
 # conf-dir=/etc/storage/dnsmasq.d/conf
-conf-dir=/etc/storage/gfwlist
+conf-dir=/etc/storage/gfwlist/
 # conf-file=/etc/storage/dnsmasq.d/conf/hosts_fq.conf" >> /tmp/tmp_dnsmasq.conf
 	cat /tmp/tmp_dnsmasq.conf | sed -E -e "/#/d" >> /etc/storage/dnsmasq/dnsmasq.conf;sleep 3
 	rm /tmp/tmp_dnsmasq.conf
@@ -66,11 +66,11 @@ if [ -f "/usr/bin/pdnsd" ]; then
 	fi
 	cat > /etc/init.d/pdnsd/pdnsd.conf <<EOF
 global {
-	perm_cache=2048;
+	perm_cache=1368;
 	cache_dir="/etc/init.d/pdnsd";
 	pid_file="/var/run/pdnsd.pid";
 	run_as="nobody";
-	server_port = 5353;
+	server_port = 5335;
 	server_ip = 127.0.0.1;
 	status_ctl = on;
 	query_method=tcp_only;
@@ -124,4 +124,3 @@ if [ -f "/etc/storage/post_iptables_script.sh" ]; then
 	sed -i '$a sed -i "/#/d" /tmp/resolv.conf;mv -f /tmp/resolv.conf /etc/resolv.conf' /etc/storage/post_iptables_script.sh
 	sed -i '$a restart_dhcpd' /etc/storage/post_iptables_script.sh
 fi
-
