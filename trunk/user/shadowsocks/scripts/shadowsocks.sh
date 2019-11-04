@@ -112,7 +112,7 @@ func_port_agent_mode(){
 	[ -z "$usr_dns" ] && usr_dns="8.8.4.4"
 	[ -z "$usr_port" ] && usr_port="53"
 	if [ "$ss_pdnsd" = "1" ]; then
-		/usr/bin/dns-forwarder -b 127.0.0.1 -p 5335 -s $usr_dns:$usr_port &
+		start-stop-daemon -S -b -x /usr/bin/dns-forwarder -- -b 127.0.0.1 -p 5335 -s $usr_dns:$usr_port &
 	elif [ "$ss_pdnsd" = "2" ]; then
 		/usr/bin/dnsproxy -T -p 5335 -R $usr_dns &
 	else
