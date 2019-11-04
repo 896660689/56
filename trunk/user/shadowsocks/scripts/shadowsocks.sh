@@ -39,6 +39,7 @@ ss_timeout=$(nvram get ss_timeout)
 ss_mode=$(nvram get ss_mode) #0:global;1:chnroute;2:gfwlist
 ss_router_proxy=$(nvram get ss_router_proxy)
 ss_lower_port_only=$(nvram get ss_lower_port_only)
+ss_pdnsd=$(nvram get ss_pdnsd)
 
 loger() {
 	logger -st "$1" "$2"
@@ -110,9 +111,9 @@ func_port_agent_mode(){
 	tcp_dns_list="208.67.222.222, 208.67.220.220"
 	[ -z "$usr_dns" ] && usr_dns="8.8.4.4"
 	[ -z "$usr_port" ] && usr_port="53"
-	if [ "$ss_lower_port_only" = "5" ]; then
+	if [ "$ss_pdnsd" = "1" ]; then
 		/usr/bin/dns-forwarder -b 127.0.0.1 -p 5335 -s $usr_dns:$usr_port &
-	elif [ "$ss_lower_port_only" = "6" ]; then
+	elif [ "$ss_pdnsd" = "2" ]; then
 		/usr/bin/dnsproxy -T -p 5335 -R $usr_dns &
 	else
 		while [ -n "`pidof dns-forwarder`" ] ; do
