@@ -51,7 +51,7 @@ function initial(){
 	var o4 = document.form.ss_obfs;
 	var o5 = document.form.ss_lower_port_only;
 	var o6 = document.form.ss_type;
-	var o7 = document.form.ss_pdnsd';
+	var o7 = document.form.ss_pdnsd;
 	o1.value = '<% nvram_get_x("","ss_method"); %>';
 	o2.value = '<% nvram_get_x("","ss_mode"); %>';
 	o3.value = '<% nvram_get_x("","ss_protocol"); %>';
