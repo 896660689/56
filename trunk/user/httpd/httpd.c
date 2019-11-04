@@ -437,6 +437,10 @@ get_login_safe(void)
 	if (login_ip.len == 0)
 		return 0;
 
+#if defined (TREAT_LOGIN_SAFE)
+	return 1;
+#endif
+
 #if defined (SUPPORT_HTTPS)
 	if (http_is_ssl)
 		return 1;
