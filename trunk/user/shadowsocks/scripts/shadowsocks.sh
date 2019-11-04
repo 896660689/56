@@ -153,6 +153,7 @@ func_start(){
 			sed -i '$a conf-dir=/etc/storage/gfwlist' $Dnsmasq_dns
 		fi
 	fi
+	restart_dhcpd
 }
 
 func_stop(){
