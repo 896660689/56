@@ -190,6 +190,7 @@ func_stop(){
 	ss-rules -f && loger $ss_bin "stop"
 	[ -f /tmp/ss-redir.json ] && rm -rf /tmp/ss-redir.json
 	[ -f /tmp/ss-watchcat.log ] && rm -rf /tmp/ss-watchcat.log
+	[ -f /etc/storage/gfwlist/custom_list.conf ] && rm -rf /etc/storage/gfwlist/custom_list.conf
 	[ -f /var/run/ss-watchdog.pid ] && rm -rf /var/run/ss-watchdog.pid
 	[ -f /var/run/pdnsd.pid ] && rm -rf /var/run/pdnsd.pid
 	[ -d /etc/init.d/pdnsd ] && rm -rf /etc/init.d/pdnsd
