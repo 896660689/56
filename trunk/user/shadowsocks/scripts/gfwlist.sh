@@ -59,6 +59,9 @@ server=/.google.com.hk/127.0.0.1#5353
 ipset=/.google.com.hk/gfwlist
 server=/.bitbucket.org/127.0.0.1#5353
 ipset=/.bitbucket.org/gfwlist
+server=/.transfer.sh/127.0.0.1#5353
+ipset=/.transfer.sh/gfwlist
+
 EOF
 	chmod 664 /etc/storage/gfwlist/custom_list.conf
 
