@@ -125,9 +125,6 @@ func_port_agent_mode(){
 
 func_start(){
 	func_gen_ss_json && \
-	func_start_ss_redir && \
-	restart_firewall && \
-	loger $ss_bin "start done" || { ss-rules -f && loger $ss_bin "start fail!";}
 	[ ! -f "/tmp/ss-watchcat.log" ] && nohup /usr/bin/ss-watchcat.sh >> /tmp/ss-watchcat.log 2>&1 &
 
 	if [ "$ss_mode" = "2" ]; then
@@ -136,6 +133,7 @@ func_start(){
 		$ss_bin -c $ss_json_file -b 0.0.0.0 -l 1080 >/dev/null 2>&1 &
 		echo "ss-redir started."
 	else
+		func_start_ss_redir && \
 		func_start_ss_rules && \
 		while [ -n "`pidof pdnsd`" ] ; do
 			kill -9 "`pidof pdnsd`"
@@ -153,7 +151,8 @@ func_start(){
 			sed -i '$a conf-dir=/etc/storage/gfwlist' $Dnsmasq_dns
 		fi
 	fi
-	restart_dhcpd
+	loger $ss_bin "start done" || { ss-rules -f && loger $ss_bin "start fail!";}
+	restart_dhcpd && restart_firewall
 }
 
 func_stop(){
