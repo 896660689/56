@@ -1,5 +1,6 @@
 #!/bin/sh
 
+username=`nvram get http_username`
 ss_bin="ss-redir"
 ss_json_file="/tmp/ss-redir.json"
 ss_proc="/var/ss-redir"
@@ -126,11 +127,15 @@ func_port_agent_mode(){
 func_start(){
 	func_gen_ss_json && \
 	[ ! -f "/tmp/ss-watchcat.log" ] && nohup /usr/bin/ss-watchcat.sh >> /tmp/ss-watchcat.log 2>&1 &
-
+	grep "ss-watchcat.log" /etc/storage/cron/crontabs/$username
+	if [ ! "$?" -eq "0" ]
+	then
+		sed -i '$a 30 6 * * * cat /dev/null > /tmp/ss-watchcat.log' /etc/storage/cron/crontabs/$username
+	fi
 	if [ "$ss_mode" = "2" ]; then
 		func_port_agent_mode && \
 		sh /usr/bin/gfwlist.sh
-		$ss_bin -c $ss_json_file -b 0.0.0.0 -l 1080 >/dev/null 2>&1 &
+		$ss_bin -c $ss_json_file -b 0.0.0.0 -l $ss_local_port >/dev/null 2>&1 &
 		echo "ss-redir started."
 	else
 		func_start_ss_redir && \
@@ -168,6 +173,11 @@ func_stop(){
 	then
 		sed -i '/gfwlist/d; /resolv.conf/d; /restart_dhcpd/d' $Firewall_rules
 	fi
+	grep "ss-watchcat.log" /etc/storage/cron/crontabs/$username
+	if [ "$?" -eq "0" ]
+	then
+		sed -i '/ss-watchcat.log/d' /etc/storage/cron/crontabs/$username
+	fi
 	if [ -f "/etc/storage/dnsmasq.d/resolv_bak" ]; then
 		cp -f /etc/storage/dnsmasq.d/resolv_bak /etc/resolv.conf
 	else
@@ -186,7 +196,7 @@ func_stop(){
 	while [ -n "`pidof dns-forwarder`" ] ; do
 		kill -9 "`pidof dns-forwarder`"
 	done
-	killall -q $ss_bin && restart_dhcpd
+	killall -q $ss_bin && restart_dhcpd && restart_firewall
 	ss-rules -f && loger $ss_bin "stop"
 	[ -f /tmp/ss-redir.json ] && rm -rf /tmp/ss-redir.json
 	[ -f /tmp/ss-watchcat.log ] && rm -rf /tmp/ss-watchcat.log
