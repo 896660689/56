@@ -35,9 +35,6 @@ $j(document).ready(function(){
 	init_itoggle('ss_update_chnroute');
 	init_itoggle('ss_update_gfwlist');
 	init_itoggle('ss-tunnel_enable');
-	init_itoggle('ss_pdnsd');
-	init_itoggle('ss_dnsproxy');
-	init_itoggle('ss_dnsforwarder');
 	$j("#tab_ss_cfg, #tab_ss_add, #tab_ss_ssl, #tab_ss_cli, #tab_ss_log").click(function(){
 		var newHash = $j(this).attr('href').toLowerCase();
 		showTab(newHash);
@@ -54,12 +51,14 @@ function initial(){
 	var o4 = document.form.ss_obfs;
 	var o5 = document.form.ss_lower_port_only;
 	var o6 = document.form.ss_type;
+	var o7 = document.form.ss_pdnsd';
 	o1.value = '<% nvram_get_x("","ss_method"); %>';
 	o2.value = '<% nvram_get_x("","ss_mode"); %>';
 	o3.value = '<% nvram_get_x("","ss_protocol"); %>';
 	o4.value = '<% nvram_get_x("","ss_obfs"); %>';
 	o5.value = '<% nvram_get_x("","ss_lower_port_only"); %>';
 	o6.value = '<% nvram_get_x("","ss_type"); %>';
+	o7.value = '<% nvram_get_x("","ss_pdnsd"); %>';
 	change_ss_watchcat_display();
 	fill_ss_status(shadowsocks_status());
 	fill_ss_tunnel_status(shadowsocks_tunnel_status());
@@ -332,10 +331,10 @@ function showTab(curHash){
 
                                         <tr> <th width="50%"><#menu5_16_41#></th>
                                             <td>
-                                                <select name="ss_lower_port_only" class="input" style="width: 180px;">
-                                                    <option value="4" ><#empty#></option>
-                                                    <option value="5" ><#Enable_dns-forwarder_Pattern#></option>
-                                                    <option value="6" ><#Enable_dnsproxy_Pattern#></option>
+                                                <select name="ss_pdnsd" class="input" style="width: 180px;">
+                                                    <option value="0" ><#empty#></option>
+                                                    <option value="1" ><#Enable_dns-forwarder_Pattern#></option>
+                                                    <option value="2" ><#Enable_dnsproxy_Pattern#></option>
                                                 </select>
                                             </td>
                                         </tr>
