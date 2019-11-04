@@ -198,7 +198,7 @@ function showTab(curHash){
                                         <a id="tab_ss_add" href="#add"><#menu5_16_31#></a>
                                     </li>
                                     <li>
-                                        <a id="tab_ss_ssl" href="#ssl"><#menu5_1_6#></a>
+                                        <a id="tab_ss_ssl" href="#ssl"><#t2PortStatus#></a>
                                     </li>
                                     <li>
                                         <a id="tab_ss_cli" href="#cli"><#menu5_16_32#></a>
@@ -278,6 +278,24 @@ function showTab(curHash){
                                                     <input type="radio" value="1" name="ss_watchcat" id="ss_watchcat_1" <% nvram_match_x("", "ss_watchcat", "1", "checked"); %>><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="ss_watchcat" id="ss_watchcat_0" <% nvram_match_x("", "ss_watchcat", "0", "checked"); %>><#checkbox_No#>
                                                 </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr> <th width="50%"><#menu5_16_14#></th>
+                                            <td>
+                                                <input type="text" maxlength="32" class="input" size="64" name="ss-tunnel_remote" value="<% nvram_get_x("","ss-tunnel_remote"); %>" />
+                                            </td>
+                                        </tr>
+
+                                        <tr> <th width="50%"><#menu5_16_15#></th>
+                                            <td>
+                                                <input type="text" maxlength="6" class="input" size="15" name="ss-tunnel_local_port" style="width: 145px" value="<% nvram_get_x("", "ss-tunnel_local_port"); %>">
+                                            </td>
+                                        </tr>
+
+                                        <tr> <th width="50%">MTU:</th>
+                                            <td>
+                                                <input type="text" maxlength="6" class="input" size="15" name="ss-tunnel_mtu" style="width: 145px" value="<% nvram_get_x("", "ss-tunnel_mtu"); %>">
                                             </td>
                                         </tr>
 
@@ -476,23 +494,6 @@ function showTab(curHash){
                                             <td id="ss_tunnel_status" colspan="3"></td>
                                         </tr>
 
-                                        <tr> <th width="50%"><#menu5_16_14#></th>
-                                            <td>
-                                                <input type="text" maxlength="32" class="input" size="64" name="ss-tunnel_remote" value="<% nvram_get_x("","ss-tunnel_remote"); %>" />
-                                            </td>
-                                        </tr>
-
-                                        <tr> <th width="50%"><#menu5_16_15#></th>
-                                            <td>
-                                                <input type="text" maxlength="6" class="input" size="15" name="ss-tunnel_local_port" style="width: 145px" value="<% nvram_get_x("", "ss-tunnel_local_port"); %>">
-                                            </td>
-                                        </tr>
-
-                                        <tr> <th width="50%">MTU:</th>
-                                            <td>
-                                                <input type="text" maxlength="6" class="input" size="15" name="ss-tunnel_mtu" style="width: 145px" value="<% nvram_get_x("", "ss-tunnel_mtu"); %>">
-                                            </td>
-                                        </tr>
                                     </table>
 
                                     <table class="table">
