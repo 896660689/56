@@ -131,6 +131,11 @@ function showTab(curHash){
 	window.location.hash = curHash;
 }
 
+function f1(){
+	alert("^-^"); 
+	return false;
+}
+
 </script>
 
 <style>
@@ -586,7 +591,7 @@ function showTab(curHash){
                                         </tr>
                                         <tr>
                                             <td width="15%" style="text-align: left; padding-bottom: 0px;">
-                                                <input type="button" onClick="location.href=location.href" value="<#menu5_7_2#>" class="btn btn-primary" style="width: 219px">
+                                                <input type="button" onClick="return f1()" value="<#menu5_7_2#>" class="btn btn-primary" style="width: 219px">
                                             </td>
                                         </tr>
                                     </table>
