@@ -256,9 +256,7 @@ function showTab(curHash){
                                             </td>
                                         </tr>
 
-                                    <div id="ss_watchcat_on_of">
-
-                                        <tr> <th colspan="2" style="background-color: #E3E3E3;">设置</th> </tr>
+                                        <tr> <th colspan="2" style="background-color: #E3E3E3;"><#Settings#></th> </tr>
                                         <tr id="ss_wathcat_option"> <th><#menu5_13_watchcat#></th>
                                             <td>
                                                 <div class="main_itoggle">
@@ -266,6 +264,7 @@ function showTab(curHash){
                                                         <input type="checkbox" id="ss_watchcat_fake" <% nvram_match_x("", "ss_watchcat", "1", "value=1 checked"); %><% nvram_match_x("", "ss_watchcat", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
+
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" name="ss_watchcat" id="ss_watchcat_1" <% nvram_match_x("", "ss_watchcat", "1", "checked"); %>><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="ss_watchcat" id="ss_watchcat_0" <% nvram_match_x("", "ss_watchcat", "0", "checked"); %>><#checkbox_No#>
@@ -281,13 +280,13 @@ function showTab(curHash){
 
                                         <tr> <th width="50%"><#menu5_16_15#></th>
                                             <td>
-                                                <input type="text" maxlength="6" class="input" size="15" name="ss-tunnel_local_port" style="width: 145px" value="<% nvram_get_x("", "ss-tunnel_local_port"); %>">
+                                                <input type="text" maxlength="6" class="input" size="15" name="ss-tunnel_local_port" style="width: 100px" value="<% nvram_get_x("", "ss-tunnel_local_port"); %>">
                                             </td>
                                         </tr>
 
                                         <tr> <th width="50%">MTU:</th>
                                             <td>
-                                                <input type="text" maxlength="6" class="input" size="15" name="ss-tunnel_mtu" style="width: 145px" value="<% nvram_get_x("", "ss-tunnel_mtu"); %>">
+                                                <input type="text" maxlength="6" class="input" size="15" name="ss-tunnel_mtu" style="width: 100px" value="<% nvram_get_x("", "ss-tunnel_mtu"); %>">
                                             </td>
                                         </tr>
 
@@ -308,7 +307,7 @@ function showTab(curHash){
 
                                         <tr> <th width="50%"><#menu5_16_18#></th>
                                             <td>
-                                                <select name="ss_lower_port_only" class="input" style="width: 200px;">
+                                                <select name="ss_lower_port_only" class="input" style="width: 145px;">
                                                     <option value="0" ><#menu5_16_18_0#></option>
                                                     <option value="1" ><#menu5_16_18_1#></option>
                                                     <option value="2" ><#menu5_16_18_2#></option>
@@ -318,7 +317,7 @@ function showTab(curHash){
 
                                         <tr> <th width="50%">MTU:</th>
                                             <td>
-                                                <input type="text" maxlength="6" class="input" size="15" name="ss_mtu" style="width: 145px" value="<% nvram_get_x("", "ss_mtu"); %>">
+                                                <input type="text" maxlength="6" class="input" size="15" name="ss_mtu" style="width: 100px" value="<% nvram_get_x("", "ss_mtu"); %>">
                                             </td>
                                         </tr>
 
@@ -332,16 +331,17 @@ function showTab(curHash){
                                             </td>
                                         </tr>
 
+										<tr> <th colspan="2" style="background-color: #E3E3E3;"><#menu5_16_3#></th> </tr>
                                         <tr> <th width="50%"><#menu5_16_30#></th>
                                             <td>
-                                                <select name="ss_type" class="input" style="width: 200px;" onchange="switch_ss_type()">
+                                                <select name="ss_type" class="input" style="width: 120px;" onchange="switch_ss_type()">
                                                     <option value="0" >SS</option>
                                                     <option value="1" >SSR</option>
                                                 </select>
                                             </td>
                                         </tr>
 
-                                        <tr> <th colspan="2" style="background-color: #E3E3E3;"><#menu5_16_3#></th> </tr>
+                                        <tr> <th colspan="2" style="background-color: #E3E3E3;"><#menu5_16_31#></th> </tr>
                                         <tr> <th width="50%"><#menu5_16_4#></th>
                                             <td>
                                                 <input type="text" maxlength="64" class="input" size="64" name="ss_server" value="<% nvram_get_x("","ss_server"); %>" />
@@ -357,7 +357,7 @@ function showTab(curHash){
 
                                         <tr> <th width="50%"><#menu5_16_6#></th>
                                             <td>
-                                                <input type="text" maxlength="6" class="input" size="15" name="ss_server_port" style="width: 145px" value="<% nvram_get_x("","ss_server_port"); %>" />
+                                                <input type="text" maxlength="6" class="input" size="15" name="ss_server_port" style="width: 120px" value="<% nvram_get_x("","ss_server_port"); %>" />
                                             </td>
                                         </tr>
 
@@ -391,7 +391,7 @@ function showTab(curHash){
 
                                         <tr> <th width="50%"><#menu5_16_21#></th>
                                             <td>
-                                                <input type="text" maxlength="6" class="input" size="15" name="ss_timeout" style="width: 145px" value="<% nvram_get_x("","ss_timeout"); %>" />
+                                                <input type="text" maxlength="6" class="input" size="15" name="ss_timeout" style="width: 120px" value="<% nvram_get_x("","ss_timeout"); %>" />
                                             </td>
                                         </tr>
 
@@ -433,10 +433,10 @@ function showTab(curHash){
                                             </td>
                                         </tr>
 
-                                        <tr> <th colspan="2" style="background-color: #E3E3E3;"><#menu5_16_8#></th> </tr>
+                                        <tr> <th colspan="2" style="background-color: #E3E3E3;"><#menu5_16_15#></th> </tr>
                                         <tr> <th width="50%"><#menu5_16_9#></th>
                                             <td>
-                                                <input type="text" maxlength="6" class="input" size="15" name="ss_local_port" style="width: 145px" value="<% nvram_get_x("", "ss_local_port"); %>">
+                                                <input type="text" maxlength="6" class="input" size="15" name="ss_local_port" style="width: 100px" value="<% nvram_get_x("", "ss_local_port"); %>">
                                             </td>
                                         </tr>
 
@@ -466,9 +466,9 @@ function showTab(curHash){
                                             <td id="ss_tunnel_status" colspan="3"></td>
                                         </tr>
 
-                                        <tr> <th colspan="2" style="background-color: #E3E3E3;"><#ChnRoute#></th> </tr>
+                                        <tr> <th colspan="2" style="background-color: #E3E3E3;"><#menu5_16_32#></th> </tr>
                                         <tr>
-                                            <th width="50%"><#menu5_17_1#>&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-info" style="padding: 5px 5px 5px 5px;" id="chnroute_count"></span></th>
+                                            <th width="50%"><#ChnRoute#>&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-info" style="padding: 5px 5px 5px 5px;" id="chnroute_count"></span></th>
                                             <td style="border-top: 0 none;" colspan="2">
                                                 <input type="button" id="btn_connect_3" class="btn btn-info" value=<#menu5_17_2#> onclick="submitInternet('Update_chnroute');">
                                             </td>
@@ -489,10 +489,8 @@ function showTab(curHash){
                                             </td>
                                         </tr>
 
-                                        <tr> <th colspan="2" style="background-color: #E3E3E3;"><#GfwList#></th> </tr>
-
                                         <tr>
-                                            <th width="50%"><#menu5_17_1#>&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-info" style="padding: 5px 5px 5px 5px;" id="gfwlist_count"></span></th>
+                                            <th width="50%"><#GfwList#>&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-info" style="padding: 5px 5px 5px 5px;" id="gfwlist_count"></span></th>
                                             <td style="border-top: 0 none;" colspan="2">
                                                 <input type="button" id="btn_connect_4" class="btn btn-info" value=<#menu5_17_2#> onclick="submitInternet('Update_gfwlist');">
                                             </td>
