@@ -35,7 +35,7 @@ $j(document).ready(function(){
 	init_itoggle('ss_update_chnroute');
 	init_itoggle('ss_update_gfwlist');
 	init_itoggle('ss-tunnel_enable');
-	$j("#tab_ss_cfg, #tab_ss_add, #tab_ss_ssl, #tab_ss_cli, #tab_ss_log").click(function(){
+	$j("#tab_ss_cfg, #tab_ss_log").click(function(){
 		var newHash = $j(this).attr('href').toLowerCase();
 		showTab(newHash);
 		return false;
@@ -78,14 +78,14 @@ function switch_ss_type(){
 function applyRule(){
 	showLoading();
 	document.form.action_mode.value = " Restart ";
-	document.form.current_page.value = "Shadowsocks.asp";
+	document.form.current_page.value = "/Shadowsocks.asp";
 	document.form.next_page.value = "";
 	document.form.submit();
 }
 
 function submitInternet(v){
 	showLoading();
-	document.Shadowsocks_action.action = "Shadowsocks_action.asp";
+	document.Shadowsocks_action.action = "/Shadowsocks_action.asp";
 	document.Shadowsocks_action.connect_action.value = v;
 	document.Shadowsocks_action.submit();
 }
@@ -113,7 +113,7 @@ function fill_ss_tunnel_status(status_code){
 	$("ss_tunnel_status").innerHTML = '<span class="label label-' + (status_code != 0 ? 'success' : 'warning') + '">' + stext + '</span>';
 }
 
-var arrHashes = ["cfg", "add", "ssl", "cli", "log"];
+var arrHashes = ["cfg", "log"];
 
 function showTab(curHash){
 	var obj = $('tab_ss_'+curHash.slice(1));
@@ -129,11 +129,6 @@ function showTab(curHash){
 		}
 	}
 	window.location.hash = curHash;
-}
-
-function f1(){
-	alert("^-^"); 
-	return false;
 }
 
 </script>
@@ -196,16 +191,7 @@ function f1(){
                             <div>
                                 <ul class="nav nav-tabs" style="margin-bottom: 10px;">
                                     <li class="active">
-                                        <a id="tab_ss_cfg" href="#cfg"><#menu5_16_33#></a>
-                                    </li>
-                                    <li>
-                                        <a id="tab_ss_add" href="#add"><#menu5_16_31#></a>
-                                    </li>
-                                    <li>
-                                        <a id="tab_ss_ssl" href="#ssl"><#t2PortStatus#></a>
-                                    </li>
-                                    <li>
-                                        <a id="tab_ss_cli" href="#cli"><#menu5_16_32#></a>
+                                        <a id="tab_ss_cfg" href="#cfg"><#menu5_16_1#></a>
                                     </li>
                                     <li>
                                         <a id="tab_ss_log" href="#log"><#menu5_16_20#></a>
@@ -217,7 +203,7 @@ function f1(){
                                 <div id="tabMenu" class="submenuBlock"></div>
                                 <div id="wnd_ss_cfg">
                                     <table width="100%" cellpadding="4" cellspacing="0" class="table">
-                                        <tr> <th colspan="2" style="background-color: #E3E3E3;"><#menu5_16_1#></th> </tr>
+                                        <tr> <th colspan="2" style="background-color: #E3E3E3;"><#menu5_16_33#></th> </tr>
 
                                         <tr> <th width="50%"><#InetControl#></th>
                                             <td style="border-top: 0 none;" colspan="2">
@@ -270,6 +256,9 @@ function f1(){
                                             </td>
                                         </tr>
 
+                                    <div id="ss_watchcat_on_of">
+
+                                        <tr> <th colspan="2" style="background-color: #E3E3E3;">设置</th> </tr>
                                         <tr id="ss_wathcat_option"> <th><#menu5_13_watchcat#></th>
                                             <td>
                                                 <div class="main_itoggle">
@@ -277,7 +266,6 @@ function f1(){
                                                         <input type="checkbox" id="ss_watchcat_fake" <% nvram_match_x("", "ss_watchcat", "1", "value=1 checked"); %><% nvram_match_x("", "ss_watchcat", "0", "value=0"); %>>
                                                     </div>
                                                 </div>
-
                                                 <div style="position: absolute; margin-left: -10000px;">
                                                     <input type="radio" value="1" name="ss_watchcat" id="ss_watchcat_1" <% nvram_match_x("", "ss_watchcat", "1", "checked"); %>><#checkbox_Yes#>
                                                     <input type="radio" value="0" name="ss_watchcat" id="ss_watchcat_0" <% nvram_match_x("", "ss_watchcat", "0", "checked"); %>><#checkbox_No#>
@@ -343,17 +331,7 @@ function f1(){
                                                 </select>
                                             </td>
                                         </tr>
-                                    </table>
 
-                                    <table class="table">
-                                        <tr>
-                                            <td style="border: 0 none; padding: 0px;"><center><input name="button" type="button" class="btn btn-primary" style="width: 219px" onclick="applyRule();" value="<#CTL_apply#>"/></center></td>
-                                        </tr>
-                                    </table>
-                                </div>
-
-                                <div id="wnd_ss_add" style="display:none">
-                                    <table width="100%" cellpadding="4" cellspacing="0" class="table">
                                         <tr> <th width="50%"><#menu5_16_30#></th>
                                             <td>
                                                 <select name="ss_type" class="input" style="width: 200px;" onchange="switch_ss_type()">
@@ -461,17 +439,7 @@ function f1(){
                                                 <input type="text" maxlength="6" class="input" size="15" name="ss_local_port" style="width: 145px" value="<% nvram_get_x("", "ss_local_port"); %>">
                                             </td>
                                         </tr>
-                                    </table>
 
-                                    <table class="table">
-                                        <tr>
-                                            <td style="border: 0 none; padding: 0px;"><center><input name="button" type="button" class="btn btn-primary" style="width: 219px" onclick="applyRule();" value="<#CTL_apply#>"/></center></td>
-                                        </tr>
-                                    </table>
-                                </div>
-
-                                <div id="wnd_ss_ssl" style="display:none">
-                                    <table width="100%" cellpadding="4" cellspacing="0" class="table">
                                         <tr> <th colspan="2" style="background-color: #E3E3E3;"><#menu5_16_12#></th> </tr>
                                         <tr> <th width="50%"><#InetControl#></th>
                                             <td style="border-top: 0 none;" colspan="2">
@@ -498,17 +466,6 @@ function f1(){
                                             <td id="ss_tunnel_status" colspan="3"></td>
                                         </tr>
 
-                                    </table>
-
-                                    <table class="table">
-                                        <tr>
-                                            <td style="border: 0 none; padding: 0px;"><center><input name="button" type="button" class="btn btn-primary" style="width: 219px" onclick="applyRule();" value="<#CTL_apply#>"/></center></td>
-                                        </tr>
-                                    </table>
-                                </div>
-
-                                <div id="wnd_ss_cli" style="display:none">
-                                    <table width="100%" cellpadding="4" cellspacing="0" class="table">
                                         <tr> <th colspan="2" style="background-color: #E3E3E3;"><#ChnRoute#></th> </tr>
                                         <tr>
                                             <th width="50%"><#menu5_17_1#>&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-info" style="padding: 5px 5px 5px 5px;" id="chnroute_count"></span></th>
@@ -587,11 +544,6 @@ function f1(){
                                         <tr>
                                             <td colspan="3" style="border-top: 0 none; padding-bottom: 0px;">
                                                 <textarea rows="21" class="span12" style="height:377px; font-family:'Courier New', Courier, mono; font-size:13px;" readonly="readonly" wrap="off" id="textarea"><% nvram_dump("ss-watchcat.log",""); %></textarea>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td width="15%" style="text-align: left; padding-bottom: 0px;">
-                                                <input type="button" onClick="return f1()" value="<#menu5_7_2#>" class="btn btn-primary" style="width: 219px">
                                             </td>
                                         </tr>
                                     </table>
