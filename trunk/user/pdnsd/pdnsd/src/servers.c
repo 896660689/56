@@ -162,7 +162,7 @@ static int uptest (servparm_t *serv, int j)
 						  serv->uptest_cmd, WTERMSIG(status));
 				}
 				else {
-					DEBUG_MSG("status of uptest command \"%s\" is of unkown type (0x%x)\n",
+					DEBUG_MSG("status of uptest command \"%s\" is of unknown type (0x%x)\n",
 						  serv->uptest_cmd, status);
 				}
 #endif

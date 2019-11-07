@@ -33,14 +33,14 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 subdir = src/rc/ArchLinux
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(srcdir)/pdnsd.in
+	$(srcdir)/pdnsd.service.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES = pdnsd
+CONFIG_CLEAN_FILES = pdnsd.service
 CONFIG_CLEAN_VPATH_FILES =
 SOURCES =
 DIST_SOURCES =
@@ -173,7 +173,7 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
-pdnsd: $(top_builddir)/config.status $(srcdir)/pdnsd.in
+pdnsd: $(top_builddir)/config.status $(srcdir)/pdnsd.service.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 tags: TAGS
 TAGS:
@@ -323,8 +323,8 @@ uninstall-am:
 
 install-exec-local:
 	if [ "$(distribution)" = "ArchLinux" ] ; then			\
-	  $(mkinstalldirs) "$(DESTDIR)/etc/rc.d";			\
-	  $(INSTALL_SCRIPT) $(srcdir)/pdnsd "$(DESTDIR)/etc/rc.d/pdnsd";\
+	  $(mkinstalldirs) "$(DESTDIR)/usr/lib/systemd/system";			\
+	  $(INSTALL_SCRIPT) $(srcdir)/pdnsd.service "$(DESTDIR)/usr/lib/systemd/system/pdnsd";\
 	fi
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

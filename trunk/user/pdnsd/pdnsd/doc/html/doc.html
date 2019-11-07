@@ -482,18 +482,10 @@
       </tr>
       <tr>
 	<td class="nowrap">
-	  <code>--enable-tcp-subseq</code>
+	  <code>--with-tcp-max-query=<i>num</i></code>
 	</td>
 	<td>
-	  Enable subsequent tcp queries. The DNS protocol standard
-	  requires that servers must be capable of answering multiple
-	  subsequent queries that are sent over the same tcp connection, and that
-	  the server may only close the connection by himself after a certain
-	  timeout. This feature is rarely used, but may make denial-of-service
-	  attacks easier, as it allows for an attacker to hold a connection open
-	  a long time (although the attacker's IP is most likely revealed then).
-	  For full standard compliance, you should use this option.
-	  If you do not use <code>--enable-tcp-server</code>, is option is not honored.
+	  Define the number of subsequent queries allowed in a tcp connections.
 	</td>
       </tr>
       <tr>
@@ -1018,7 +1010,7 @@
 	  supported).
 	  One of this vulnerabilities is that an attacker may bombard you with forged answers in hopes that one may match a
 	  query
-	  you have done. If you have done such a query, one in 65536 forged packets will be succesful (i.e. an average packet
+	  you have done. If you have done such a query, one in 65536 forged packets will be successful (i.e. an average packet
 	  count of 32768 is needed for that attack). pdnsd can use TCP for queries,
 	  which has a slightly higher overhead, but is much less vulnerable to such attacks on sane operating systems. Also, pdnsd
 	  chooses random query ids, so that an attacker cannot take a shortcut. If the attacker is able to listen to your network
@@ -1386,7 +1378,7 @@
 	      you need a <code>/dev/isdninfo</code> device file (major#45, minor#255), or the
 	      isdn uptest will always fail.
 	    <li><b><code>dev</code></b> and <b><code>diald</code></b>: Perform an <code>if</code> uptest, and, if that
-	      was succesful, additionally check whether a program is running that
+	      was successful, additionally check whether a program is running that
 	      has locked a given (modem-) device. The needed parameters are an interface (specified as for the <code>if</code>
 	      uptest, e.g. <code>&quot;ppp0&quot;</code>) and a device relative to <code>/dev</code> (e.g.
 	      <code>&quot;modem&quot;</code> for <code>/dev/modem</code> specified using the <code>device=</code> option.
@@ -1537,7 +1529,7 @@
 	  specifies how long the fetched data may be cached until it needs to be
 	  reloaded. If <code>purge_cache</code> is set to <code>off</code>, the stale records are not purged
 	  (unless the cache size would be exceeded, in this case the oldest records are purged).
-	  Instead, they are still served if they cannot succesfully be
+	  Instead, they are still served if they cannot successfully be
 	  updated (e.g. because all servers are down).<br>
 	  Default is <code>off</code>.
 	</td>
@@ -1876,8 +1868,8 @@
 	<td>
 	  <b><code>ptr=<i>string</i>;</code></b><br>
 	  Defines a PTR (domain name pointer) record. The argument is a host name in
-	  dotted notation (see name). The ptr record is for resolving adresses into names. For example, if
-	  you want the adress 127.0.0.1 to resolve into localhost, and localhost into 127.0.0.1, you need something
+	  dotted notation (see name). The ptr record is for resolving addresses into names. For example, if
+	  you want the address 127.0.0.1 to resolve into localhost, and localhost into 127.0.0.1, you need something
 	  like the following sections:<br>
 	  <pre>
     rr {
@@ -1898,9 +1890,9 @@
 	  There is something special about the name in the second section:
 	  when a resolver wants to get a host name from an internet address,
 	  it composes an address that is built of the IP address in reverse byte order
-	  (<code>1.0.0.127</code> instead of <code>127.0.0.1</code>) where each byte of the adress written
+	  (<code>1.0.0.127</code> instead of <code>127.0.0.1</code>) where each byte of the address written
 	  as number constitutes a sub-domain under the domain <code>in-addr.arpa.</code> <br>
-	  So, if you want to compose an adress for reverse resolving, take your ip in dotted notation (e.g. <code>1.2.3.4</code>),
+	  So, if you want to compose an address for reverse resolving, take your ip in dotted notation (e.g. <code>1.2.3.4</code>),
 	  reverse the byte order (<code>4.3.2.1</code>) and append in-addr.arpa. (<code>4.3.2.1.in-addr.arpa.</code>)
 	  Then, define an <code>rr</code> section giving this address as <code>name</code> and the domain name corresponding to
 	  that ip in the <code>ptr</code> option.
@@ -1992,7 +1984,7 @@
     cached negatively locally. Queries for negatively cached records are always answered
     immediatley with an error or an empty answer without querying other hosts as long
     as the record is valid. The records defined with <code>neg</code> sections remain
-    valid until they are explicitely invalidated or deleted by the user using
+    valid until they are explicitly invalidated or deleted by the user using
     <a href="#pdnsdctl"><code>pdnsd-ctl</code></a>.<br>
     This is useful if a certain application asks periodically for nonexisting hosts or
     RR types and you do not want a query to go out every time the cached record has

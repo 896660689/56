@@ -109,6 +109,7 @@ while(<>) {
     s{(?<![-\w\\])-[-\w]*}{(my $s=$&) =~ s{-}{\\-}g;$s}ge;
     s{\bpdnsd-ctl\b}{pdnsd\\-ctl}g;
     s{\blist-rrtypes\b}{list\\-rrtypes}g;
+	s{(\\[nt])}{\\$1}g;  # escape "\t" and "\n" to fix "W: manpage-has-errors-from-man usr/share/man/man5/pdnsd.conf.5.gz 45: a space character is not allowed in an escape name"
     print;
 }
 
