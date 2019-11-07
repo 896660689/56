@@ -40,8 +40,8 @@ ss_mode=$(nvram get ss_mode) #0:global;1:chnroute;2:gfwlist
 ss_router_proxy=$(nvram get ss_router_proxy)
 ss_lower_port_only=$(nvram get ss_lower_port_only)
 ss_pdnsd=$(nvram get ss_pdnsd)
-ss-tunnel_local_port=$(nvram get ss-tunnel_local_port)
-ss-tunnel_remote =$(nvram get ss-tunnel_remote)
+ss_tunnel_local_port=$(nvram get ss-tunnel_local_port)
+ss_tunnel_remote=$(nvram get ss-tunnel_remote)
 
 loger() {
 	logger -st "$1" "$2"
@@ -109,9 +109,9 @@ EOF
 
 func_port_agent_mode(){
 	if [ "$ss_pdnsd" = "1" ]; then
-		start-stop-daemon -S -b -x /usr/bin/dns-forwarder -- -b 127.0.0.1 -p $ss-tunnel_local_port -s $ss-tunnel_remote 2>&1 &
+		start-stop-daemon -S -b -x /usr/bin/dns-forwarder -- -b 127.0.0.1 -p $ss_tunnel_local_port -s $ss_tunnel_remote 2>&1 &
 	elif [ "$ss_pdnsd" = "2" ]; then
-		/usr/bin/dnsproxy -T -p $ss-tunnel_local_port -R 8.8.4.4 2>&1 &
+		/usr/bin/dnsproxy -T -p $ss_tunnel_local_port -R 8.8.4.4 2>&1 &
 	else
 		while [ -n "`pidof dns-forwarder`" ] ; do
 			kill -9 "`pidof dns-forwarder`"
@@ -150,8 +150,6 @@ func_start(){
 		if [ ! "$?" -eq "0" ]
 		then
 			sed -i '/127.0.0.1/d; /min-cache/d; /conf-dir/d; /log/d' $Dnsmasq_dns
-			sed -i '$a min-cache-ttl=3600' $Dnsmasq_dns
-			sed -i '$a conf-dir=/etc/storage/gfwlist' $Dnsmasq_dns
 		fi
 	fi
 	loger $ss_bin "start done" || { ss-rules -f && loger $ss_bin "start fail!";}
