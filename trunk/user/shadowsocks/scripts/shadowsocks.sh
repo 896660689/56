@@ -40,6 +40,8 @@ ss_mode=$(nvram get ss_mode) #0:global;1:chnroute;2:gfwlist
 ss_router_proxy=$(nvram get ss_router_proxy)
 ss_lower_port_only=$(nvram get ss_lower_port_only)
 ss_pdnsd=$(nvram get ss_pdnsd)
+ss-tunnel_local_port=$(nvram get ss-tunnel_local_port)
+ss-tunnel_remote =$(nvram get ss-tunnel_remote)
 
 loger() {
 	logger -st "$1" "$2"
@@ -106,15 +108,10 @@ EOF
 }
 
 func_port_agent_mode(){
-	usr_dns="$1"
-	usr_port="$2"
-	tcp_dns_list="208.67.222.222, 208.67.220.220"
-	[ -z "$usr_dns" ] && usr_dns="8.8.4.4"
-	[ -z "$usr_port" ] && usr_port="53"
 	if [ "$ss_pdnsd" = "1" ]; then
-		start-stop-daemon -S -b -x /usr/bin/dns-forwarder -- -b 127.0.0.1 -p 5335 -s $usr_dns:$usr_port &
+		start-stop-daemon -S -b -x /usr/bin/dns-forwarder -- -b 127.0.0.1 -p $ss-tunnel_local_port -s $ss-tunnel_remote 2>&1 &
 	elif [ "$ss_pdnsd" = "2" ]; then
-		/usr/bin/dnsproxy -T -p 5335 -R $usr_dns &
+		/usr/bin/dnsproxy -T -p $ss-tunnel_local_port -R 8.8.4.4 2>&1 &
 	else
 		while [ -n "`pidof dns-forwarder`" ] ; do
 			kill -9 "`pidof dns-forwarder`"
