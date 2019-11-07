@@ -2370,11 +2370,11 @@ int report_cache_stat(int f)
 {
 	long mc=(long)global.perm_cache*1024+MCSZ;
 	fsprintf_or_return(f,"\nCache status:\n=============\n");
-	fsprintf_or_return(f,"%ld kB maximum disk cache size.\n",global.perm_cache);
-	fsprintf_or_return(f,"%ld of %ld bytes (%.3g%%) memory cache used in %ld entries"		fsprintf_or_return(f,"%ld/%ld bytes (%.3g%%) memory cache used in %ld entries"
-			   " (avg %.5g bytes/entry).\n",				   " (avg %.5g bytes/entry).\n",
-			   csz, mc, (((double)csz)/mc)*100, en,
-			   ((double)cache_size)/ent_num);
+	fsprintf_or_return(f,"%ld kB maximum disk cache size.\n",pc);
+	fsprintf_or_return(f,"%ld/%ld bytes (%.3g%%) memory cache used in %ld entries"
+			   " (avg %.5g bytes/entry).\n",
+			   csz/1024, mc/1024, (((double)csz)/mc)*100, en,
+			   ((double)csz)/en);
 	return 0;
 }
 
