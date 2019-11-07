@@ -1,18 +1,27 @@
 #!/bin/sh
 
+CHNROUTE_URL="$(nvram get ss_update_chnroute)"
+tmp_chnroute="/tmp/chinadns_chnroute.txt"
 set -e -o pipefail
 
-[ "$1" != "force" ] && [ "$(nvram get ss_update_chnroute)" != "1" ] && exit 0
-logger -st "chnroute" "Starting update..."
-rm -f /tmp/chinadns_chnroute.txt
-wget --no-check-certificate -t 15 -T 50 -O- "https://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest" | \
-awk -F\| '/CN\|ipv4/ { printf("%s/%d\n", $4, 32-log($5)/log(2)) }' > /tmp/chinadns_chnroute.txt
+[ -f $tmp_chnroute ] && rm -rf $tmp_chnroute && logger -st "chnroute" "Starting update..."
 
-[ ! -d /etc/storage/chinadns/ ] && mkdir /etc/storage/chinadns/
-mv -f /tmp/chinadns_chnroute.txt /etc/storage/chinadns/chnroute.txt
+if [ "$1" != "force" ] && [ "$(nvram get ss_update_chnroute)" != "1" ]; then
+	exit 0
+else
 
-mtd_storage.sh save >/dev/null 2>&1
+	for URL in \
+		"https://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest"
+	do
+		wget -t 15 -T 50 -c --no-check-certificate -O- "${URL}" \
+		| awk -F\| '/CN\|ipv4/ { printf("%s/%d\n", $4, 32-log($5)/log(2)) }' >> $tmp_chnroute
+	done
+fi
 
-[ -f /usr/bin/shadowsocks.sh ] && [ "$(nvram get ss_enable)" = "1" ] && /usr/bin/shadowsocks.sh restart >/dev/null 2>&1
+if [ ! -d "/etc/storage/chinadns" ]; then
+	mkdir -p /etc/storage/chinadns/
+	mv -f $tmp_chnroute /etc/storage/chinadns/chnroute.txt
+fi
 
 logger -st "chnroute" "Update done"
+restart_dhcpd
