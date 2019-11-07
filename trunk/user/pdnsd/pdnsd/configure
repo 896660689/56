@@ -1964,7 +1964,7 @@ ac_configure="$SHELL $ac_aux_dir/configure"  # Please don't use this var.
 # so one script is as good as another.  But avoid the broken or
 # incompatible versions:
 # SysV /etc/install, /usr/sbin/install
-# SunOS /usr/etc/install
+# SunOS /usr/bin/install
 # IRIX /sbin/install
 # AIX /bin/install
 # AmigaOS /C/install, which installs bootblocks on floppy discs
@@ -1988,7 +1988,7 @@ do
   # Account for people who put trailing slashes in PATH elements.
 case $as_dir/ in
   ./ | .// | /cC/* | \
-  /etc/* | /usr/sbin/* | /usr/etc/* | /sbin/* | /usr/afsws/bin/* | \
+  /etc/* | /usr/sbin/* | /usr/bin/* | /sbin/* | /usr/afsws/bin/* | \
   ?:\\/os2\\/install\\/* | ?:\\/OS2\\/INSTALL\\/* | \
   /usr/ucb/* ) ;;
   *)
@@ -6557,7 +6557,7 @@ fi
 # so one script is as good as another.  But avoid the broken or
 # incompatible versions:
 # SysV /etc/install, /usr/sbin/install
-# SunOS /usr/etc/install
+# SunOS /usr/bin/install
 # IRIX /sbin/install
 # AIX /bin/install
 # AmigaOS /C/install, which installs bootblocks on floppy discs
@@ -6581,7 +6581,7 @@ do
   # Account for people who put trailing slashes in PATH elements.
 case $as_dir/ in
   ./ | .// | /cC/* | \
-  /etc/* | /usr/sbin/* | /usr/etc/* | /sbin/* | /usr/afsws/bin/* | \
+  /etc/* | /usr/sbin/* | /usr/bin/* | /sbin/* | /usr/afsws/bin/* | \
   ?:\\/os2\\/install\\/* | ?:\\/OS2\\/INSTALL\\/* | \
   /usr/ucb/* ) ;;
   *)
@@ -10527,7 +10527,8 @@ $debug ||
 if test -n "$CONFIG_FILES"; then
 
 
-ac_cr=''
+ac_cr=''
+
 ac_cs_awk_cr=`$AWK 'BEGIN { print "a\rb" }' </dev/null 2>/dev/null`
 if test "$ac_cs_awk_cr" = "a${ac_cr}b"; then
   ac_cs_awk_cr='\\r'
@@ -11303,4 +11304,3 @@ if test -n "$ac_unrecognized_opts" && test "$enable_option_checking" != no; then
   { $as_echo "$as_me:$LINENO: WARNING: unrecognized options: $ac_unrecognized_opts" >&5
 $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
-
