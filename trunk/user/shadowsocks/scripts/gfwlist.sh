@@ -50,20 +50,6 @@ conf-dir=/etc/storage/gfwlist/
 	cat /tmp/tmp_dnsmasq.conf | sed -E -e "/#/d" >> /etc/storage/dnsmasq/dnsmasq.conf;sleep 3
 	rm /tmp/tmp_dnsmasq.conf
 fi
-[ ! -f "/etc/storage/gfwlist/custom_list.conf" ] && cat > "/etc/storage/gfwlist/custom_list.conf" <<EOF
-#server=/.github.com/127.0.0.1#5353
-#ipset=/.github.com/gfwlist
-#server=/.githubusercontent.com/127.0.0.1#5353
-#ipset=/.githubusercontent.com/gfwlist
-server=/.google.com.hk/127.0.0.1#5353
-ipset=/.google.com.hk/gfwlist
-server=/.bitbucket.org/127.0.0.1#5353
-ipset=/.bitbucket.org/gfwlist
-server=/.transfer.sh/127.0.0.1#5353
-ipset=/.transfer.sh/gfwlist
-
-EOF
-	chmod 664 /etc/storage/gfwlist/custom_list.conf
 
 if [ -f "/usr/bin/pdnsd" ]; then
 	logger -t "SS" "正在启动pdnsd..."
